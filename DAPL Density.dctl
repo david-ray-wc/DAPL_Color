@@ -1,0 +1,58 @@
+DEFINE_UI_PARAMS(red_sat, Red Sat, DCTLUI_SLIDER_FLOAT, 0.0f, -0.5f, 0.5f, 0.001f);
+DEFINE_UI_PARAMS(green_sat, Green Sat, DCTLUI_SLIDER_FLOAT, 0.0f, -0.5f, 0.5f, 0.001f);
+DEFINE_UI_PARAMS(blue_sat, Blue Sat, DCTLUI_SLIDER_FLOAT, 0.0f, -0.5f, 0.5f, 0.001f);
+DEFINE_UI_PARAMS(cyan_sat, Cyan Sat, DCTLUI_SLIDER_FLOAT, 0.0f, -0.5f, 0.5f, 0.001f);
+DEFINE_UI_PARAMS(magenta_sat, Mag Sat, DCTLUI_SLIDER_FLOAT, 0.0f, -0.5f, 0.5f, 0.001f);
+DEFINE_UI_PARAMS(yellow_sat, Yel Sat, DCTLUI_SLIDER_FLOAT, 0.0f, -0.5f, 0.5f, 0.001f);
+
+__DEVICE__ float3 transform(int p_Width, int p_Height, int p_X, int p_Y, float p_R, float p_G, float p_B)
+{
+    float3 Color;
+
+    // Red Vertex (1, 0, 0) -> Boost R, Cut G/B
+    float3 red = make_float3(1.f + red_sat, 0.f - red_sat * 0.5f, 0.f - red_sat * 0.5f); 
+    
+    // Green Vertex (0, 1, 0) -> Boost G, Cut R/B
+    float3 grn = make_float3(0.f - green_sat * 0.5f, 1.f + green_sat, 0.f - green_sat * 0.5f);
+    
+    // Blue Vertex (0, 0, 1) -> Boost B, Cut R/G
+    float3 blu = make_float3(0.f - blue_sat * 0.5f, 0.f - blue_sat * 0.5f, 1.f + blue_sat);
+    
+    // Cyan Vertex (0, 1, 1) -> Boost G/B, Cut R (Recessive)
+    float3 cyn = make_float3(0.f - cyan_sat, 1.f + cyan_sat * 0.5f, 1.f + cyan_sat * 0.5f);
+    
+    // Magenta Vertex (1, 0, 1) -> Boost R/B, Cut G (Recessive)
+    float3 mag = make_float3(1.f + magenta_sat * 0.5f, 0.f - magenta_sat, 1.f + magenta_sat * 0.5f);
+    
+    // Yellow Vertex (1, 1, 0) -> Boost R/G, Cut B (Recessive)
+    float3 yel = make_float3(1.f + yellow_sat * 0.5f, 1.f + yellow_sat * 0.5f, 0.f - yellow_sat);
+    
+    // White Vertex (Kept at 1,1,1 to preserve the neutral axis)
+    float3 wht = make_float3(1.f, 1.f, 1.f);
+
+
+    // TETRAHEDRAL INTERPOLATION (Identical to DAPL Tetra Hue)
+	if (p_R > p_G) {
+            if (p_G > p_B){
+                Color = p_R * red       + p_G * (yel-red) + p_B * (wht-yel);
+            }
+            else if (p_R > p_B){
+                Color = p_R * red       + p_G * (wht-mag) + p_B * (mag-red);
+            }
+            else{
+                Color = p_R * (mag-blu) + p_G * (wht-mag) + p_B * blu;
+            }
+        } else {      
+            if (p_B > p_G){
+                Color = p_R * (wht-cyn) + p_G * (cyn-blu) + p_B * blu;
+            }
+            else if (p_B > p_R){
+                Color = p_R * (wht-cyn) + p_G * grn       + p_B * (cyn-grn);
+            }
+            else{
+                Color = p_R * (yel-grn) + p_G * grn       + p_B * (wht-yel);
+            }
+        }
+        
+    return Color;
+}

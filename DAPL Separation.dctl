@@ -1,0 +1,33 @@
+DEFINE_UI_PARAMS(red_sat, Red Saturation, DCTLUI_SLIDER_FLOAT, 0.f, -0.32f, 0.32f, 0.01f);
+DEFINE_UI_PARAMS(green_sat, Green Saturation, DCTLUI_SLIDER_FLOAT, 0.f, -0.32f, 0.32f, 0.01f);
+DEFINE_UI_PARAMS(blue_sat, Blue Saturation, DCTLUI_SLIDER_FLOAT, 0.f, -0.32f, 0.32f, 0.01f);
+
+__DEVICE__ float3 transform(int p_Width, int p_Height, int p_X, int p_Y, float p_R, float p_G, float p_B) {
+    
+    // Initialize Matrix
+    float3 red_channel = make_float3(1.0f, 0.0f, 0.0f);
+    float3 green_channel = make_float3(0.0f, 1.0f, 0.0f);
+    float3 blue_channel = make_float3(0.0f, 0.0f, 1.0f);
+
+   // Adjust Red Channel
+    red_channel.x = red_channel.x + red_sat;   // Adjust Red component
+    red_channel.y = red_channel.y - red_sat * 0.5f;
+    red_channel.z = red_channel.z - red_sat * 0.5f;
+
+    // Adjust Green Channel
+    green_channel.y = green_channel.y + green_sat; // Adjust Green component
+    green_channel.x = green_channel.x - green_sat * 0.5f;
+    green_channel.z = green_channel.z - green_sat * 0.5f;
+
+    // Adjust Blue Channel
+    blue_channel.z = blue_channel.z + blue_sat;   // Adjust Blue component
+    blue_channel.x = blue_channel.x - blue_sat * 0.5f;
+    blue_channel.y = blue_channel.y - blue_sat * 0.5f;
+
+    // Apply Matrix
+    float r_out = (p_R * red_channel.x) + (p_G * red_channel.y) + (p_B * red_channel.z);
+    float g_out = (p_R * green_channel.x) + (p_G * green_channel.y) + (p_B * green_channel.z);
+    float b_out = (p_R * blue_channel.x) + (p_G * blue_channel.y) + (p_B * blue_channel.z);
+
+    return make_float3(r_out, g_out, b_out);
+}
