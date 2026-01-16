@@ -1,9 +1,9 @@
-DEFINE_UI_PARAMS(red_sat, Red Sat, DCTLUI_SLIDER_FLOAT, 0.0f, -0.5f, 0.5f, 0.001f);
-DEFINE_UI_PARAMS(green_sat, Green Sat, DCTLUI_SLIDER_FLOAT, 0.0f, -0.5f, 0.5f, 0.001f);
-DEFINE_UI_PARAMS(blue_sat, Blue Sat, DCTLUI_SLIDER_FLOAT, 0.0f, -0.5f, 0.5f, 0.001f);
-DEFINE_UI_PARAMS(cyan_sat, Cyan Sat, DCTLUI_SLIDER_FLOAT, 0.0f, -0.5f, 0.5f, 0.001f);
-DEFINE_UI_PARAMS(magenta_sat, Mag Sat, DCTLUI_SLIDER_FLOAT, 0.0f, -0.5f, 0.5f, 0.001f);
-DEFINE_UI_PARAMS(yellow_sat, Yel Sat, DCTLUI_SLIDER_FLOAT, 0.0f, -0.5f, 0.5f, 0.001f);
+DEFINE_UI_PARAMS(red_sat, Red Sat, DCTLUI_SLIDER_FLOAT, 0.0f, -0.64f, 0.64f, 0.001f);
+DEFINE_UI_PARAMS(yellow_sat, Yel Sat, DCTLUI_SLIDER_FLOAT, 0.0f, -0.64f, 0.64f, 0.001f);
+DEFINE_UI_PARAMS(green_sat, Green Sat, DCTLUI_SLIDER_FLOAT, 0.0f, -0.64f, 0.64f, 0.001f);
+DEFINE_UI_PARAMS(cyan_sat, Cyan Sat, DCTLUI_SLIDER_FLOAT, 0.0f, -0.64f, 0.64f, 0.001f);
+DEFINE_UI_PARAMS(blue_sat, Blue Sat, DCTLUI_SLIDER_FLOAT, 0.0f, -0.64f, 0.64f, 0.001f);
+DEFINE_UI_PARAMS(magenta_sat, Mag Sat, DCTLUI_SLIDER_FLOAT, 0.0f, -0.64f, 0.64f, 0.001f);
 
 __DEVICE__ float3 transform(int p_Width, int p_Height, int p_X, int p_Y, float p_R, float p_G, float p_B)
 {
