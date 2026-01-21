@@ -1,6 +1,6 @@
-DEFINE_UI_PARAMS(red_hue, Red Hue, DCTLUI_SLIDER_FLOAT, 0.f, -0.32f, 0.32f, 0.01f);
-DEFINE_UI_PARAMS(green_hue, Green Hue, DCTLUI_SLIDER_FLOAT, 0.f, -0.32f, 0.32f, 0.01f);
-DEFINE_UI_PARAMS(blue_hue, Blue Hue, DCTLUI_SLIDER_FLOAT, 0.f, -0.32f, 0.32f, 0.01f);
+DEFINE_UI_PARAMS(red_hue, Red Channel, DCTLUI_SLIDER_FLOAT, 0.f, -0.4f, 0.4f, 0.001f);
+DEFINE_UI_PARAMS(green_hue, Green Channel, DCTLUI_SLIDER_FLOAT, 0.f, -0.4f, 0.4f, 0.001f);
+DEFINE_UI_PARAMS(blue_hue, Blue Channel, DCTLUI_SLIDER_FLOAT, 0.f, -0.4f, 0.4f, 0.001f);
 
 __DEVICE__ float3 transform(int p_Width, int p_Height, int p_X, int p_Y, float p_R, float p_G, float p_B) {
     
@@ -10,16 +10,16 @@ __DEVICE__ float3 transform(int p_Width, int p_Height, int p_X, int p_Y, float p
     float3 blue_channel = make_float3(0.0f, 0.0f, 1.0f);
 
     // Adjust Red Channel
-    red_channel.y = red_channel.y + red_hue;   // Adjust Green component
-    red_channel.z = red_channel.z - red_hue;   // Adjust Blue component
+    red_channel.y = red_channel.y - red_hue;   // Adjust Green component
+    red_channel.z = red_channel.z + red_hue;   // Adjust Blue component
 
     // Adjust Green Channel
     green_channel.x = green_channel.x - green_hue; // Adjust Red component
     green_channel.z = green_channel.z + green_hue; // Adjust Blue component
 
     // Adjust Blue Channel
-    blue_channel.x = blue_channel.x + blue_hue;   // Adjust Red component
-    blue_channel.y = blue_channel.y - blue_hue;   // Adjust Green component
+    blue_channel.x = blue_channel.x - blue_hue;   // Adjust Red component
+    blue_channel.y = blue_channel.y + blue_hue;   // Adjust Green component
 
     // Apply Matrix
     float r_out = (p_R * red_channel.x) + (p_G * red_channel.y) + (p_B * red_channel.z);

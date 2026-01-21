@@ -1,6 +1,6 @@
-DEFINE_UI_PARAMS(red_sat, Red Saturation, DCTLUI_SLIDER_FLOAT, 0.f, -0.32f, 0.32f, 0.01f);
-DEFINE_UI_PARAMS(green_sat, Green Saturation, DCTLUI_SLIDER_FLOAT, 0.f, -0.32f, 0.32f, 0.01f);
-DEFINE_UI_PARAMS(blue_sat, Blue Saturation, DCTLUI_SLIDER_FLOAT, 0.f, -0.32f, 0.32f, 0.01f);
+DEFINE_UI_PARAMS(red_sat, Red Channel, DCTLUI_SLIDER_FLOAT, 0.f, -0.4f, 0.4f, 0.001f);
+DEFINE_UI_PARAMS(green_sat, Green Channel, DCTLUI_SLIDER_FLOAT, 0.f, -0.4f, 0.4f, 0.001f);
+DEFINE_UI_PARAMS(blue_sat, Blue Channel, DCTLUI_SLIDER_FLOAT, 0.f, -0.4f, 0.4f, 0.001f);
 
 __DEVICE__ float3 transform(int p_Width, int p_Height, int p_X, int p_Y, float p_R, float p_G, float p_B) {
     
