@@ -1,0 +1,73 @@
+DEFINE_UI_PARAMS(red_hue, Red Hue, DCTLUI_SLIDER_INT, 0, -8, 8, 1);
+DEFINE_UI_PARAMS(red_sat, Red Saturation, DCTLUI_SLIDER_INT, 0, -8, 8, 1);
+DEFINE_UI_PARAMS(yellow_hue, Yellow Hue, DCTLUI_SLIDER_INT, 0, -8, 8, 1);
+DEFINE_UI_PARAMS(yellow_sat, Yellow Saturation, DCTLUI_SLIDER_INT, 0, -8, 8, 1);
+DEFINE_UI_PARAMS(green_hue, Green Hue, DCTLUI_SLIDER_INT, 0, -8, 8, 1);
+DEFINE_UI_PARAMS(green_sat, Green Saturation, DCTLUI_SLIDER_INT, 0, -8, 8, 1);
+DEFINE_UI_PARAMS(cyan_hue, Cyan Hue, DCTLUI_SLIDER_INT, 0, -8, 8, 1);
+DEFINE_UI_PARAMS(cyan_sat, Cyan Saturation, DCTLUI_SLIDER_INT, 0, -8, 8, 1);
+DEFINE_UI_PARAMS(blue_hue, Blue Hue, DCTLUI_SLIDER_INT, 0, -8, 8, 1);
+DEFINE_UI_PARAMS(blue_sat, Blue Saturation, DCTLUI_SLIDER_INT, 0, -8, 8, 1);
+DEFINE_UI_PARAMS(magenta_hue, Magenta Hue, DCTLUI_SLIDER_INT, 0, -8, 8, 1);
+DEFINE_UI_PARAMS(magenta_sat, Magenta Saturation, DCTLUI_SLIDER_INT, 0, -8, 8, 1);
+
+__DEVICE__ float3 transform(int p_Width, int p_Height, int p_X, int p_Y, float p_R, float p_G, float p_B)
+{
+    float3 Color;
+    float power_factor = 0.064f;
+    float3 red = make_float3(1.f, 0.f - red_hue * power_factor, 0.f + red_hue * power_factor); 
+    float3 grn = make_float3(0.f - green_hue * power_factor, 1.f, 0.f + green_hue * power_factor);
+    float3 blu = make_float3(0.f + blue_hue * power_factor, 0.f - blue_hue * power_factor, 1.f);
+    float3 cyn = make_float3(0.f, 1.f - cyan_hue * power_factor, 1.f + cyan_hue * power_factor);
+    float3 mag = make_float3(1.f - magenta_hue * power_factor, 0.f, 1.f + magenta_hue * power_factor);
+    float3 yel = make_float3(1.f + yellow_hue * power_factor, 1.f - yellow_hue * power_factor, 0.f);
+    float3 wht = make_float3(1.f, 1.f, 1.f);
+
+    red.x = red.x + red_sat * power_factor;
+    red.y = red.y - red_sat * power_factor / 2;
+    red.z = red.z - red_sat * power_factor / 2;
+
+    grn.x = grn.x - green_sat * power_factor / 2;
+    grn.y = grn.y + green_sat * power_factor;
+    grn.z = grn.z - green_sat * power_factor / 2;
+
+    blu.x = blu.x - blue_sat * power_factor / 2;
+    blu.y = blu.y - blue_sat * power_factor / 2;
+    blu.z = blu.z + blue_sat * power_factor;
+
+    cyn.x = cyn.x - cyan_sat * power_factor / 2;
+    cyn.y = cyn.y + cyan_sat * power_factor;
+    cyn.z = cyn.z + cyan_sat * power_factor;
+
+    mag.x = mag.x + magenta_sat * power_factor;
+    mag.y = mag.y - magenta_sat * power_factor / 2;
+    mag.z = mag.z + magenta_sat * power_factor;
+
+    yel.x = yel.x + yellow_sat * power_factor;
+    yel.y = yel.y - yellow_sat * power_factor / 2;
+    yel.z = yel.z - yellow_sat * power_factor / 2;
+
+	if (p_R > p_G) {
+            if (p_G > p_B){
+                Color = p_R * red       + p_G * (yel-red) + p_B * (wht-yel);
+            }
+            else if (p_R > p_B){
+                Color = p_R * red       + p_G * (wht-mag) + p_B * (mag-red);
+            }
+            else{
+                Color = p_R * (mag-blu) + p_G * (wht-mag) + p_B * blu;
+            }
+        } else {      
+            if (p_B > p_G){
+                Color = p_R * (wht-cyn) + p_G * (cyn-blu) + p_B * blu;
+            }
+            else if (p_B > p_R){
+                Color = p_R * (wht-cyn) + p_G * grn       + p_B * (cyn-grn);
+            }
+            else{
+                Color = p_R * (yel-grn) + p_G * grn       + p_B * (wht-yel);
+            }
+        }
+        
+    return Color;
+}
