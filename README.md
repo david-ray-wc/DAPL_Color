@@ -56,7 +56,7 @@ The DAPL_Crosstalk, DAPL_Separation, DAPL_Hue, and DAPL_Saturation tools are mea
 
 ## Recipes
 
-Another inspiration is the "recipe" culture that Fujifilm has with their mirrorless cameras. The DAPL_Matrix and DAPL_Tetra tools are integer sliders in order to facilitate the creation and sharing of recipes.
+Another inspiration is the "recipe" culture that Fujifilm has with their mirrorless cameras. The DAPL_Matrix and DAPL_Tetra tools are integer sliders in order to facilitate the creation and sharing of recipes. View them on the [Recipes Page](Recipes.md).
 
 ## Limitations
 
